@@ -3,6 +3,9 @@
 require_once 'config/config.php';
 require_once 'config/autoload.php';
 
+//session is needed to keep the logged in user
+session_start();
+
 //get the asked action, home by default
 $action = Utils::request('action', 'home');
 
@@ -16,6 +19,16 @@ try {
         case 'login':
             $authController = new AuthController();
             $authController->showLogin();
+            break;
+
+        case 'authenticate':
+            $authController = new AuthController();
+            $authController->authenticate();
+            break;
+
+        case 'logout':
+            $authController = new AuthController();
+            $authController->logout();
             break;
 
         default:

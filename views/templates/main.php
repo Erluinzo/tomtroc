@@ -30,7 +30,11 @@ $currentAction = $_GET['action'] ?? 'home';
                 <ul>
                     <li><a href="#">Messagerie <span class="badge">1</span></a></li>
                     <li><a href="#">Mon compte</a></li>
-                    <li><a href="index.php?action=login"<?= $currentAction === 'login' ? ' aria-current="page"' : '' ?>>Connexion</a></li>
+                    <?php if (isset($_SESSION['user'])) { ?>
+                        <li><a href="index.php?action=logout">Déconexion</a></li>
+                    <?php } else { ?>
+                        <li><a href="index.php?action=login"<?= $currentAction === 'login' ? ' aria-current="page"' : '' ?>>Connexion</a></li>
+                    <?php } ?>
                 </ul>
             </nav>
         </div>

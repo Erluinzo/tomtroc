@@ -479,6 +479,12 @@ ul {
     border-color: var(--green);
 }
 
+.form__error {
+    margin-bottom: 16px;
+    color: #c0392b;
+    font-size: 14px;
+}
+
 .btn--block {
     width: 100%;
     padding: 20px;

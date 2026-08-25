@@ -8,4 +8,11 @@ class Utils
     {
         return $_REQUEST[$name] ?? $default;
     }
+
+    //redirect to an action of the router and stop the script
+    public static function redirect(string $action): void
+    {
+        header('Location: index.php?action=' . $action);
+        exit();
+    }
 }

@@ -6,10 +6,14 @@
         <div class="auth__box">
             <h1 class="auth__title">Connexion</h1>
 
-            <form class="form" action="index.php?action=login" method="post">
+            <?php if (!empty($error)) { ?>
+                <p class="form__error"><?= htmlspecialchars($error) ?></p>
+            <?php } ?>
+
+            <form class="form" action="index.php?action=authenticate" method="post">
                 <div class="form__group">
                     <label class="form__label" for="email">Adresse email</label>
-                    <input class="form__input" type="email" id="email" name="email" required>
+                    <input class="form__input" type="email" id="email" name="email" value="<?= htmlspecialchars($email ?? '') ?>" required>
                 </div>
 
                 <div class="form__group">
