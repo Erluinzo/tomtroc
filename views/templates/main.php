@@ -1,5 +1,6 @@
 <?php
 //main layout, needs $title and $content
+$currentAction = $_GET['action'] ?? 'home';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -20,7 +21,7 @@
 
             <nav class="nav nav--main" aria-label="Navigation principale">
                 <ul>
-                    <li><a href="index.php" aria-current="page">Accueil</a></li>
+                    <li><a href="index.php"<?= $currentAction === 'home' ? ' aria-current="page"' : '' ?>>Accueil</a></li>
                     <li><a href="#">Nos livres à l'échange</a></li>
                 </ul>
             </nav>
@@ -29,7 +30,7 @@
                 <ul>
                     <li><a href="#">Messagerie <span class="badge">1</span></a></li>
                     <li><a href="#">Mon compte</a></li>
-                    <li><a href="#">Connexion</a></li>
+                    <li><a href="index.php?action=login"<?= $currentAction === 'login' ? ' aria-current="page"' : '' ?>>Connexion</a></li>
                 </ul>
             </nav>
         </div>

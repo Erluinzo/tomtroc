@@ -13,6 +13,11 @@ try {
             $homeController->showHome();
             break;
 
+        case 'login':
+            $authController = new AuthController();
+            $authController->showLogin();
+            break;
+
         default:
             //page not found, show the error page
             throw new Exception("La page demandée n'existe pas.");
