@@ -125,3 +125,34 @@ ul {
     font-size: 9px;
     font-weight: 700;
 }
+
+/* footer */
+.footer {
+    margin-top: 40px;
+}
+
+.footer__bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 32px;
+    min-height: 60px;
+}
+
+.footer__link,
+.footer__copy {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--dark);
+}
+
+.footer__link:hover {
+    color: var(--green);
+}
+
+.footer__logo {
+    font-family: var(--font-title);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--green);
+}

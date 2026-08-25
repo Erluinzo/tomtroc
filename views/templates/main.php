@@ -40,7 +40,12 @@
     </main>
 
     <footer class="footer">
-        <p class="footer__text">TomTroc</p>
+        <div class="container footer__bar">
+            <a class="footer__link" href="#">Politique de confidentialité</a>
+            <a class="footer__link" href="#">Mentions légales</a>
+            <span class="footer__copy">Tom Troc&copy;</span>
+            <a class="footer__logo" href="index.php" aria-label="Tom Troc, accueil">TT</a>
+        </div>
     </footer>
 </body>
 </html>
