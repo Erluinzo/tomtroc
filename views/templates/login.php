@@ -21,7 +21,7 @@
                     <input class="form__input" type="password" id="password" name="password" required>
                 </div>
 
-                <button class="btn btn--primary btn--block" type="submit">S'inscrire</button>
+                <button class="btn btn--primary btn--block" type="submit">Se connecter</button>
             </form>
 
             <p class="auth__switch">Pas de compte ? <a href="index.php?action=register">Inscrivez-vous</a></p>
