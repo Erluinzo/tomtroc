@@ -6,7 +6,7 @@
         <div class="hero__text">
             <h1 class="hero__title">Rejoignez nos lecteurs passionnés</h1>
             <p class="hero__desc">Donnez une nouvelle vie à vos livres en les échangeant avec d'autres amoureux de la lecture. Nous croyons en la magie du partage de connaissances et d'histoires à travers les livres.</p>
-            <a class="btn btn--primary" href="#">Découvrir</a>
+            <a class="btn btn--primary" href="index.php?action=books">Découvrir</a>
         </div>
 
         <figure class="hero__media">
@@ -36,7 +36,7 @@
         </ul>
 
         <div class="latest__cta">
-            <a class="btn btn--primary" href="#">Voir tous les livres</a>
+            <a class="btn btn--primary" href="index.php?action=books">Voir tous les livres</a>
         </div>
     </div>
 </section>
@@ -54,7 +54,7 @@
         </ul>
 
         <div class="how__cta">
-            <a class="btn btn--outline" href="#">Voir tous les livres</a>
+            <a class="btn btn--outline" href="index.php?action=books">Voir tous les livres</a>
         </div>
     </div>
 </section>

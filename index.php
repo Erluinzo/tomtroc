@@ -16,6 +16,11 @@ try {
             $homeController->showHome();
             break;
 
+        case 'books':
+            $booksController = new BooksController();
+            $booksController->index();
+            break;
+
         case 'login':
             $authController = new AuthController();
             $authController->showLogin();

@@ -19,4 +19,25 @@ class BookManager extends AbstractEntityManager
         }
         return $books;
     }
+
+    //get every book with its owner, optionally filtered by title
+    public function getAllBooks(?string $search = null): array
+    {
+        $sql = "SELECT b.id, b.title, b.author, b.cover, b.is_available, u.username AS owner_name FROM books b INNER JOIN users u ON u.id = b.user_id";
+        $params = null;
+
+        if ($search !== null && $search !== '') {
+            $sql .= " WHERE b.title LIKE :search";
+            $params = ['search' => '%' . $search . '%'];
+        }
+
+        $sql .= " ORDER BY b.created_at DESC";
+        $result = $this->db->query($sql, $params);
+
+        $books = [];
+        while ($row = $result->fetch()) {
+            $books[] = new Book($row);
+        }
+        return $books;
+    }
 }

@@ -22,7 +22,7 @@ $currentAction = $_GET['action'] ?? 'home';
             <nav class="nav nav--main" aria-label="Navigation principale">
                 <ul>
                     <li><a href="index.php"<?= $currentAction === 'home' ? ' aria-current="page"' : '' ?>>Accueil</a></li>
-                    <li><a href="#">Nos livres à l'échange</a></li>
+                    <li><a href="index.php?action=books"<?= $currentAction === 'books' ? ' aria-current="page"' : '' ?>>Nos livres à l'échange</a></li>
                 </ul>
             </nav>
 
