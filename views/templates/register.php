@@ -1,19 +1,20 @@
 <?php
-//login page
+//register page
 ?>
 <section class="auth">
     <div class="auth__form">
         <div class="auth__box">
-            <h1 class="auth__title">Connexion</h1>
+            <h1 class="auth__title">Inscription</h1>
 
-            <?php if (!empty($error)) { ?>
-                <p class="form__error"><?= htmlspecialchars($error) ?></p>
-            <?php } ?>
+            <form class="form" action="index.php?action=register" method="post">
+                <div class="form__group">
+                    <label class="form__label" for="username">Pseudo</label>
+                    <input class="form__input" type="text" id="username" name="username" required>
+                </div>
 
-            <form class="form" action="index.php?action=authenticate" method="post">
                 <div class="form__group">
                     <label class="form__label" for="email">Adresse email</label>
-                    <input class="form__input" type="email" id="email" name="email" value="<?= htmlspecialchars($email ?? '') ?>" required>
+                    <input class="form__input" type="email" id="email" name="email" required>
                 </div>
 
                 <div class="form__group">
@@ -24,7 +25,7 @@
                 <button class="btn btn--primary btn--block" type="submit">S'inscrire</button>
             </form>
 
-            <p class="auth__switch">Pas de compte ? <a href="index.php?action=register">Inscrivez-vous</a></p>
+            <p class="auth__switch">Déjà inscrit ? <a href="index.php?action=login">Connectez-vous</a></p>
         </div>
     </div>
 

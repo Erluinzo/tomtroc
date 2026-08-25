@@ -33,7 +33,7 @@ $currentAction = $_GET['action'] ?? 'home';
                     <?php if (isset($_SESSION['user'])) { ?>
                         <li><a href="index.php?action=logout">Déconnexion</a></li>
                     <?php } else { ?>
-                        <li><a href="index.php?action=login"<?= $currentAction === 'login' ? ' aria-current="page"' : '' ?>>Connexion</a></li>
+                        <li><a href="index.php?action=login"<?= in_array($currentAction, ['login', 'register'], true) ? ' aria-current="page"' : '' ?>>Connexion</a></li>
                     <?php } ?>
                 </ul>
             </nav>

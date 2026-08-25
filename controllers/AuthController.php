@@ -10,6 +10,13 @@ class AuthController
         $view->render("login");
     }
 
+    //show the register page
+    public function showRegister(): void
+    {
+        $view = new View("Inscription");
+        $view->render("register");
+    }
+
     //check the submitted credentials and open a session
     public function authenticate(): void
     {

@@ -21,6 +21,11 @@ try {
             $authController->showLogin();
             break;
 
+        case 'register':
+            $authController = new AuthController();
+            $authController->showRegister();
+            break;
+
         case 'authenticate':
             $authController = new AuthController();
             $authController->authenticate();
