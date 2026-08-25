@@ -290,3 +290,57 @@ ul {
     margin-top: 48px;
     text-align: center;
 }
+
+/* outline button */
+.btn--outline {
+    padding: 18px 40px;
+    background-color: transparent;
+    border: 1px solid var(--green);
+    color: var(--green);
+}
+
+.btn--outline:hover {
+    background-color: var(--green);
+    color: #fff;
+}
+
+/* how it works */
+.how {
+    padding: 64px 0;
+    background-color: var(--cream);
+}
+
+.how__intro {
+    max-width: 480px;
+    margin: 16px auto 0;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.5;
+}
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(4, 215px);
+    justify-content: center;
+    gap: 36px;
+    margin-top: 48px;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 139px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.how__cta {
+    margin-top: 48px;
+    text-align: center;
+}
