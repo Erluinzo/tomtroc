@@ -352,3 +352,52 @@ ul {
     background-size: cover;
     background-position: center;
 }
+
+/* values */
+.values {
+    padding: 72px 0 88px;
+    background-color: var(--cream);
+}
+
+.values__inner {
+    position: relative;
+    max-width: 460px;
+    margin: 0 auto;
+}
+
+.values__title {
+    margin-bottom: 24px;
+    font-family: var(--font-title);
+    font-weight: 400;
+    font-size: 32px;
+}
+
+.values__text {
+    max-width: 330px;
+}
+
+.values__text p {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.5;
+}
+
+.values__text p + p {
+    margin-top: 16px;
+}
+
+.values__team {
+    display: block;
+    margin-top: 24px;
+    font-size: 12px;
+    font-style: italic;
+    color: var(--gray);
+}
+
+.values__heart {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 100px;
+    height: auto;
+}
