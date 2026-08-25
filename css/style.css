@@ -344,3 +344,11 @@ ul {
     margin-top: 48px;
     text-align: center;
 }
+
+/* full-width banner */
+.banner {
+    height: 230px;
+    background-image: url('../img/banner.jpg');
+    background-size: cover;
+    background-position: center;
+}
