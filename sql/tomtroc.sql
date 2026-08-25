@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 25, 2026 at 12:02 AM
+-- Generation Time: Aug 25, 2026 at 09:46 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -22,6 +22,34 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `tomtroc` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `tomtroc`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `books`
+--
+
+DROP TABLE IF EXISTS `books`;
+CREATE TABLE `books` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `title` varchar(150) NOT NULL,
+  `author` varchar(120) NOT NULL,
+  `description` text DEFAULT NULL,
+  `cover` varchar(255) DEFAULT NULL,
+  `is_available` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `books`
+--
+
+INSERT INTO `books` (`id`, `user_id`, `title`, `author`, `description`, `cover`, `is_available`, `created_at`) VALUES
+(1, 1, 'Esther', 'Alabaster', 'Roman graphique, très bon état.', 'books/esther.jpg', 1, '2026-05-19 12:42:21'),
+(2, 2, 'The Kinfolk Table', 'Nathan Williams', 'Cuisine et art de vivre, quelques pages cornées.', 'books/kinfolk-table.jpg', 1, '2026-06-07 05:23:34'),
+(3, 3, 'Wabi Sabi', 'Beth Kempton', 'Essai sur l\'art japonais de l\'imperfection.', 'books/wabi-sabi.jpg', 1, '2026-07-28 14:29:12'),
+(4, 4, 'Milk & honey', 'Rupi Kaur', 'Recueil de poésie contemporaine.', 'books/milk-and-honey.jpg', 1, '2026-08-11 08:23:50');
 
 -- --------------------------------------------------------
 
@@ -53,6 +81,13 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `created_at`) VALUES
 --
 
 --
+-- Indexes for table `books`
+--
+ALTER TABLE `books`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_books_user` (`user_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -65,10 +100,26 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `books`
+--
+ALTER TABLE `books`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `books`
+--
+ALTER TABLE `books`
+  ADD CONSTRAINT `fk_books_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

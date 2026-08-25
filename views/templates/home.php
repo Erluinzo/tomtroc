@@ -15,3 +15,28 @@
         </figure>
     </div>
 </section>
+
+<section class="latest">
+    <div class="container">
+        <h2 class="section-title">Les derniers livres ajoutés</h2>
+
+        <ul class="book-grid">
+            <?php foreach ($books as $book) { ?>
+                <li class="book-card">
+                    <a class="book-card__link" href="#">
+                        <img class="book-card__cover" src="./img/<?= htmlspecialchars($book->getCover()) ?>" alt="Couverture de <?= htmlspecialchars($book->getTitle()) ?>" width="200" height="200">
+                        <div class="book-card__body">
+                            <h3 class="book-card__title"><?= htmlspecialchars($book->getTitle()) ?></h3>
+                            <p class="book-card__author"><?= htmlspecialchars($book->getAuthor()) ?></p>
+                            <p class="book-card__seller">Vendu par : <?= htmlspecialchars($book->getOwnerName()) ?></p>
+                        </div>
+                    </a>
+                </li>
+            <?php } ?>
+        </ul>
+
+        <div class="latest__cta">
+            <a class="btn btn--primary" href="#">Voir tous les livres</a>
+        </div>
+    </div>
+</section>
