@@ -26,6 +26,11 @@ try {
             $authController->showRegister();
             break;
 
+        case 'signup':
+            $authController = new AuthController();
+            $authController->signup();
+            break;
+
         case 'authenticate':
             $authController = new AuthController();
             $authController->authenticate();

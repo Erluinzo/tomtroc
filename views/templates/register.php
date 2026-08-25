@@ -6,15 +6,23 @@
         <div class="auth__box">
             <h1 class="auth__title">Inscription</h1>
 
-            <form class="form" action="index.php?action=register" method="post">
+            <?php if (!empty($errors)) { ?>
+                <div class="form__error">
+                    <?php foreach ($errors as $err) { ?>
+                        <p><?= htmlspecialchars($err) ?></p>
+                    <?php } ?>
+                </div>
+            <?php } ?>
+
+            <form class="form" action="index.php?action=signup" method="post">
                 <div class="form__group">
                     <label class="form__label" for="username">Pseudo</label>
-                    <input class="form__input" type="text" id="username" name="username" required>
+                    <input class="form__input" type="text" id="username" name="username" value="<?= htmlspecialchars($username ?? '') ?>" required>
                 </div>
 
                 <div class="form__group">
                     <label class="form__label" for="email">Adresse email</label>
-                    <input class="form__input" type="email" id="email" name="email" required>
+                    <input class="form__input" type="email" id="email" name="email" value="<?= htmlspecialchars($email ?? '') ?>" required>
                 </div>
 
                 <div class="form__group">

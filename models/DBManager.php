@@ -39,4 +39,10 @@ class DBManager
         }
         return $query;
     }
+
+    //id of the last inserted row
+    public function lastInsertId(): string
+    {
+        return $this->db->lastInsertId();
+    }
 }
