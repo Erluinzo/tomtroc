@@ -685,3 +685,107 @@ ul {
 .book__cta {
     margin-top: auto;
 }
+
+/* account */
+.account {
+    padding: 48px 0 64px;
+}
+
+.account__title {
+    margin-bottom: 32px;
+    font-family: var(--font-title);
+    font-weight: 400;
+    font-size: 28px;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.account__cards {
+    display: flex;
+    align-items: stretch;
+    gap: 32px;
+}
+
+.account__profile {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    text-align: center;
+}
+
+.profile__avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 135px;
+    height: 135px;
+    border-radius: 50%;
+    background-color: var(--green);
+    color: #fff;
+    font-family: var(--font-title);
+    font-size: 52px;
+}
+
+.profile__edit {
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--gray);
+    text-decoration: underline;
+}
+
+.profile__rule {
+    width: 100%;
+    max-width: 320px;
+    margin: 24px 0 40px;
+    border: none;
+    border-top: 1px solid var(--border);
+}
+
+.profile__name {
+    font-family: var(--font-title);
+    font-size: 24px;
+}
+
+.profile__since {
+    margin-top: 8px;
+    font-size: 14px;
+    color: var(--gray);
+}
+
+.profile__label {
+    margin-top: 32px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.profile__count {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.account__info {
+    flex: 1;
+    padding: 40px;
+}
+
+.account__subtitle {
+    margin-bottom: 24px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.form__input--filled {
+    background-color: #edf2f6;
+    border-color: transparent;
+}

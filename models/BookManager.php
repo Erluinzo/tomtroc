@@ -56,4 +56,20 @@ class BookManager extends AbstractEntityManager
         }
         return null;
     }
+
+    //get the books owned by one user
+    public function getBooksByUser(int $userId): array
+    {
+        $sql = "SELECT id, title, author, description, cover, is_available
+                FROM books
+                WHERE user_id = :user_id
+                ORDER BY created_at DESC";
+        $result = $this->db->query($sql, ['user_id' => $userId]);
+
+        $books = [];
+        while ($row = $result->fetch()) {
+            $books[] = new Book($row);
+        }
+        return $books;
+    }
 }

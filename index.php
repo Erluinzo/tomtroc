@@ -26,6 +26,11 @@ try {
             $booksController->show();
             break;
 
+        case 'account':
+            $accountController = new AccountController();
+            $accountController->index();
+            break;
+
         case 'login':
             $authController = new AuthController();
             $authController->showLogin();
