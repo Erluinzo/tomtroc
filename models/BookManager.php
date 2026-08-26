@@ -72,4 +72,43 @@ class BookManager extends AbstractEntityManager
         }
         return $books;
     }
+
+    //insert a new book and return its id
+    public function addBook(int $userId, string $title, string $author, string $description, ?string $cover, int $isAvailable): int
+    {
+        $sql = "INSERT INTO books (user_id, title, author, description, cover, is_available)
+                VALUES (:user_id, :title, :author, :description, :cover, :is_available)";
+        $this->db->query($sql, [
+            'user_id' => $userId,
+            'title' => $title,
+            'author' => $author,
+            'description' => $description,
+            'cover' => $cover,
+            'is_available' => $isAvailable,
+        ]);
+
+        return (int) $this->db->lastInsertId();
+    }
+
+    //update an existing book
+    public function updateBook(int $id, string $title, string $author, string $description, ?string $cover, int $isAvailable): void
+    {
+        $sql = "UPDATE books
+                SET title = :title, author = :author, description = :description, cover = :cover, is_available = :is_available
+                WHERE id = :id";
+        $this->db->query($sql, [
+            'title' => $title,
+            'author' => $author,
+            'description' => $description,
+            'cover' => $cover,
+            'is_available' => $isAvailable,
+            'id' => $id,
+        ]);
+    }
+
+    //delete a book by its id
+    public function deleteBook(int $id): void
+    {
+        $this->db->query("DELETE FROM books WHERE id = :id", ['id' => $id]);
+    }
 }

@@ -51,6 +51,10 @@ $bookCount = count($books);
         </div>
 
         <div class="card account__library">
+            <div class="account__library-head">
+                <a class="btn btn--primary" href="index.php?action=editBook">Ajouter un livre</a>
+            </div>
+
             <table class="lib-table">
                 <thead>
                     <tr>
@@ -81,8 +85,11 @@ $bookCount = count($books);
                                 <?php } ?>
                             </td>
                             <td class="lib-table__actions">
-                                <a href="#">Éditer</a>
-                                <a class="lib-table__delete" href="#">Supprimer</a>
+                                <a href="index.php?action=editBook&id=<?= (int) $book->getId() ?>">Éditer</a>
+                                <form class="inline-form" action="index.php?action=deleteBook" method="post">
+                                    <input type="hidden" name="id" value="<?= (int) $book->getId() ?>">
+                                    <button class="link-button lib-table__delete" type="submit">Supprimer</button>
+                                </form>
                             </td>
                         </tr>
                     <?php } ?>

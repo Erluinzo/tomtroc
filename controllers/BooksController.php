@@ -33,4 +33,143 @@ class BooksController
         $view = new View($book->getTitle());
         $view->render("book", ['book' => $book]);
     }
+
+    //show the add/edit form, members only
+    public function showEdit(): void
+    {
+        $this->requireLogin();
+        $id = (int) Utils::request('id', 0);
+
+        $book = null;
+        if ($id > 0) {
+            $book = $this->ownedBookOrFail($id);
+        }
+
+        $view = new View($id > 0 ? 'Modifier un livre' : 'Ajouter un livre');
+        $view->render("editBook", ['book' => $book]);
+    }
+
+    //save the submitted book (insert or update), members only
+    public function save(): void
+    {
+        $this->requireLogin();
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            Utils::redirect('account');
+        }
+
+        $userId = (int) $_SESSION['user']['id'];
+        $id = (int) Utils::request('id', 0);
+        $title = trim(Utils::request('title', ''));
+        $author = trim(Utils::request('author', ''));
+        $description = trim(Utils::request('description', ''));
+        $isAvailable = Utils::request('is_available', '1') === '0' ? 0 : 1;
+
+        $bookManager = new BookManager();
+
+        //a book can only be edited by its owner
+        $current = $id > 0 ? $this->ownedBookOrFail($id) : null;
+
+        //keep the current cover unless a new valid image is uploaded
+        $cover = $this->saveCover($_FILES['cover'] ?? []);
+        if ($cover === null && $current) {
+            $cover = $current->getCover();
+        }
+
+        //validation failed, show the form again with the values
+        if ($title === '' || $author === '') {
+            $book = new Book([
+                'id' => $id,
+                'title' => $title,
+                'author' => $author,
+                'description' => $description,
+                'cover' => $cover,
+                'is_available' => $isAvailable,
+            ]);
+            $view = new View($id > 0 ? 'Modifier un livre' : 'Ajouter un livre');
+            $view->render("editBook", [
+                'book' => $book,
+                'error' => "Le titre et l'auteur sont obligatoires.",
+            ]);
+            return;
+        }
+
+        if ($id > 0) {
+            $bookManager->updateBook($id, $title, $author, $description, $cover, $isAvailable);
+        } else {
+            $bookManager->addBook($userId, $title, $author, $description, $cover, $isAvailable);
+        }
+
+        Utils::redirect('account');
+    }
+
+    //delete one of the member's books
+    public function delete(): void
+    {
+        $this->requireLogin();
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            Utils::redirect('account');
+        }
+
+        $id = (int) Utils::request('id', 0);
+        $this->ownedBookOrFail($id);
+
+        (new BookManager())->deleteBook($id);
+        Utils::redirect('account');
+    }
+
+    //stop guests from reaching the private book actions
+    private function requireLogin(): void
+    {
+        if (!isset($_SESSION['user'])) {
+            Utils::redirect('login');
+        }
+    }
+
+    //return the book only if it belongs to the logged in member
+    private function ownedBookOrFail(int $id): Book
+    {
+        $book = (new BookManager())->getBookById($id);
+        if (!$book || $book->getUserId() !== (int) $_SESSION['user']['id']) {
+            throw new Exception("Livre introuvable ou accès refusé.");
+        }
+        return $book;
+    }
+
+    //validate, resize and store an uploaded cover, return its path or null
+    private function saveCover(array $file): ?string
+    {
+        if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
+            return null;
+        }
+        if ($file['size'] > 2 * 1024 * 1024) {
+            return null;
+        }
+
+        //rebuild the image with gd, this also drops anything that is not a real image
+        $source = @imagecreatefromstring(file_get_contents($file['tmp_name']));
+        if (!$source) {
+            return null;
+        }
+
+        $width = imagesx($source);
+        $height = imagesy($source);
+        $side = min($width, $height);
+        $square = imagecreatetruecolor(400, 400);
+        imagecopyresampled(
+            $square,
+            $source,
+            0,
+            0,
+            (int) (($width - $side) / 2),
+            (int) (($height - $side) / 2),
+            400,
+            400,
+            $side,
+            $side
+        );
+
+        $name = 'books/' . uniqid('book_', true) . '.jpg';
+        imagejpeg($square, 'img/' . $name, 85);
+        return $name;
+    }
 }

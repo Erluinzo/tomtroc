@@ -31,6 +31,21 @@ try {
             $accountController->index();
             break;
 
+        case 'editBook':
+            $booksController = new BooksController();
+            $booksController->showEdit();
+            break;
+
+        case 'saveBook':
+            $booksController = new BooksController();
+            $booksController->save();
+            break;
+
+        case 'deleteBook':
+            $booksController = new BooksController();
+            $booksController->delete();
+            break;
+
         case 'login':
             $authController = new AuthController();
             $authController->showLogin();

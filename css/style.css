@@ -875,3 +875,107 @@ ul {
 .pill--unavailable {
     background-color: #c56d6d;
 }
+
+/* actions cell */
+.lib-table__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.inline-form {
+    display: inline;
+}
+
+/* a button that looks like a link */
+.link-button {
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* visually hidden but kept for screen readers */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip: rect(0 0 0 0);
+    overflow: hidden;
+}
+
+.account__library-head {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+}
+
+/* add / edit book form */
+.back-link {
+    display: inline-block;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: var(--gray);
+}
+
+.back-link:hover {
+    color: var(--green);
+}
+
+.book-form {
+    padding: 40px 0 64px;
+}
+
+.book-form__title {
+    margin-bottom: 32px;
+    font-family: var(--font-title);
+    font-weight: 400;
+    font-size: 36px;
+}
+
+.book-form__card {
+    padding: 48px;
+}
+
+.book-form__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+}
+
+.book-form__cover {
+    display: block;
+    width: 100%;
+    border-radius: 4px;
+}
+
+.book-form__cover--empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    background-color: #edf2f6;
+    color: var(--gray);
+}
+
+.book-form__file {
+    display: block;
+    margin-top: 12px;
+    text-align: right;
+    font-size: 14px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.book-form__textarea {
+    height: auto;
+    padding: 14px;
+    line-height: 1.5;
+    resize: vertical;
+}
