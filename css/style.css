@@ -499,6 +499,12 @@ ul {
     font-size: 14px;
 }
 
+.form__success {
+    margin-bottom: 16px;
+    color: var(--green);
+    font-size: 14px;
+}
+
 .btn--block {
     width: 100%;
     padding: 20px;

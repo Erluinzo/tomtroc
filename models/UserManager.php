@@ -54,4 +54,24 @@ class UserManager extends AbstractEntityManager
 
         return (int) $this->db->lastInsertId();
     }
+
+    //update the pseudo and email of a user
+    public function updateProfile(int $id, string $username, string $email): void
+    {
+        $sql = "UPDATE users SET username = :username, email = :email WHERE id = :id";
+        $this->db->query($sql, [
+            'username' => $username,
+            'email' => $email,
+            'id' => $id,
+        ]);
+    }
+
+    //update the hashed password of a user
+    public function updatePassword(int $id, string $password): void
+    {
+        $this->db->query("UPDATE users SET password = :password WHERE id = :id", [
+            'password' => $password,
+            'id' => $id,
+        ]);
+    }
 }

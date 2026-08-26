@@ -31,6 +31,11 @@ try {
             $accountController->index();
             break;
 
+        case 'updateAccount':
+            $accountController = new AccountController();
+            $accountController->update();
+            break;
+
         case 'editBook':
             $booksController = new BooksController();
             $booksController->showEdit();

@@ -29,7 +29,17 @@ $bookCount = count($books);
             <div class="card account__info">
                 <h2 class="account__subtitle">Vos informations personnelles</h2>
 
-                <form class="form" action="index.php?action=account" method="post">
+                <?php if (!empty($errors)) { ?>
+                    <div class="form__error">
+                        <?php foreach ($errors as $err) { ?>
+                            <p><?= htmlspecialchars($err) ?></p>
+                        <?php } ?>
+                    </div>
+                <?php } elseif (Utils::request('saved')) { ?>
+                    <p class="form__success">Vos informations ont été mises à jour.</p>
+                <?php } ?>
+
+                <form class="form" action="index.php?action=updateAccount" method="post">
                     <div class="form__group">
                         <label class="form__label" for="email">Adresse email</label>
                         <input class="form__input form__input--filled" type="email" id="email" name="email" value="<?= htmlspecialchars($user->getEmail()) ?>">
