@@ -23,7 +23,7 @@
         <ul class="book-grid">
             <?php foreach ($books as $book) { ?>
                 <li class="book-card">
-                    <a class="book-card__link" href="#">
+                    <a class="book-card__link" href="index.php?action=book&id=<?= (int) $book->getId() ?>">
                         <img class="book-card__cover" src="./img/<?= htmlspecialchars($book->getCover()) ?>" alt="Couverture de <?= htmlspecialchars($book->getTitle()) ?>" width="200" height="200">
                         <div class="book-card__body">
                             <h3 class="book-card__title"><?= htmlspecialchars($book->getTitle()) ?></h3>

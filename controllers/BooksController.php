@@ -17,4 +17,20 @@ class BooksController
             'search' => $search,
         ]);
     }
+
+    //show the detail of one book
+    public function show(): void
+    {
+        $id = (int) Utils::request('id', 0);
+
+        $bookManager = new BookManager();
+        $book = $bookManager->getBookById($id);
+
+        if (!$book) {
+            throw new Exception("Le livre demandé n'existe pas.");
+        }
+
+        $view = new View($book->getTitle());
+        $view->render("book", ['book' => $book]);
+    }
 }

@@ -21,6 +21,11 @@ try {
             $booksController->index();
             break;
 
+        case 'book':
+            $booksController = new BooksController();
+            $booksController->show();
+            break;
+
         case 'login':
             $authController = new AuthController();
             $authController->showLogin();

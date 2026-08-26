@@ -5,8 +5,10 @@ class Book extends AbstractEntity
 {
     private string $title;
     private string $author;
+    private ?string $description = null;
     private ?string $cover = null;
     private int $isAvailable = 1;
+    private int $userId = 0;
     private string $ownerName;
 
     public function setTitle(string $title): void
@@ -39,6 +41,16 @@ class Book extends AbstractEntity
         return $this->cover;
     }
 
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
     public function setIsAvailable(int $isAvailable): void
     {
         $this->isAvailable = $isAvailable;
@@ -47,6 +59,16 @@ class Book extends AbstractEntity
     public function getIsAvailable(): int
     {
         return $this->isAvailable;
+    }
+
+    public function setUserId(int $userId): void
+    {
+        $this->userId = $userId;
+    }
+
+    public function getUserId(): int
+    {
+        return $this->userId;
     }
 
     //name of the member who owns the book, filled from a join
