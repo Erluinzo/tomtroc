@@ -49,5 +49,49 @@ $bookCount = count($books);
                 </form>
             </div>
         </div>
+
+        <div class="card account__library">
+            <table class="lib-table">
+                <thead>
+                    <tr>
+                        <th>Photo</th>
+                        <th>Titre</th>
+                        <th>Auteur</th>
+                        <th>Description</th>
+                        <th>Disponibilité</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($books as $book) { ?>
+                        <tr>
+                            <td>
+                                <img class="lib-table__cover" src="./img/<?= htmlspecialchars($book->getCover()) ?>" alt="Couverture de <?= htmlspecialchars($book->getTitle()) ?>" width="60" height="85">
+                            </td>
+                            <td><?= htmlspecialchars($book->getTitle()) ?></td>
+                            <td><?= htmlspecialchars($book->getAuthor()) ?></td>
+                            <td>
+                                <div class="lib-table__desc"><?= htmlspecialchars($book->getDescription() ?? '') ?></div>
+                            </td>
+                            <td>
+                                <?php if ($book->getIsAvailable()) { ?>
+                                    <span class="pill pill--available">disponible</span>
+                                <?php } else { ?>
+                                    <span class="pill pill--unavailable">non dispo.</span>
+                                <?php } ?>
+                            </td>
+                            <td class="lib-table__actions">
+                                <a href="#">Éditer</a>
+                                <a class="lib-table__delete" href="#">Supprimer</a>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+
+            <?php if (empty($books)) { ?>
+                <p class="lib-table__empty">Vous n'avez pas encore de livre dans votre bibliothèque.</p>
+            <?php } ?>
+        </div>
     </div>
 </section>
