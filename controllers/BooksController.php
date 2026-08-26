@@ -138,38 +138,6 @@ class BooksController
     //validate, resize and store an uploaded cover, return its path or null
     private function saveCover(array $file): ?string
     {
-        if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
-            return null;
-        }
-        if ($file['size'] > 2 * 1024 * 1024) {
-            return null;
-        }
-
-        //rebuild the image with gd, this also drops anything that is not a real image
-        $source = @imagecreatefromstring(file_get_contents($file['tmp_name']));
-        if (!$source) {
-            return null;
-        }
-
-        $width = imagesx($source);
-        $height = imagesy($source);
-        $side = min($width, $height);
-        $square = imagecreatetruecolor(400, 400);
-        imagecopyresampled(
-            $square,
-            $source,
-            0,
-            0,
-            (int) (($width - $side) / 2),
-            (int) (($height - $side) / 2),
-            400,
-            400,
-            $side,
-            $side
-        );
-
-        $name = 'books/' . uniqid('book_', true) . '.jpg';
-        imagejpeg($square, 'img/' . $name, 85);
-        return $name;
+        return Utils::saveSquareImage($file, 'books', 400);
     }
 }

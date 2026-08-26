@@ -8,8 +8,16 @@ $bookCount = count($books);
 
         <div class="account__cards">
             <div class="card account__profile">
-                <div class="profile__avatar" aria-hidden="true"><?= htmlspecialchars(strtoupper(mb_substr($user->getUsername(), 0, 1))) ?></div>
-                <a class="profile__edit" href="#">modifier</a>
+                <?php if ($user->getAvatar()) { ?>
+                    <img class="profile__avatar profile__avatar--img" src="./img/<?= htmlspecialchars($user->getAvatar()) ?>" alt="Avatar de <?= htmlspecialchars($user->getUsername()) ?>">
+                <?php } else { ?>
+                    <div class="profile__avatar" aria-hidden="true"><?= htmlspecialchars(strtoupper(mb_substr($user->getUsername(), 0, 1))) ?></div>
+                <?php } ?>
+
+                <form class="avatar-form" action="index.php?action=uploadAvatar" method="post" enctype="multipart/form-data">
+                    <input class="visually-hidden" type="file" id="avatar" name="avatar" accept="image/jpeg,image/png,image/webp" onchange="this.form.submit()">
+                    <label class="profile__edit" for="avatar">modifier</label>
+                </form>
 
                 <hr class="profile__rule">
 

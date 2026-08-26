@@ -30,4 +30,42 @@ class Utils
         $days = max(1, $diff->d);
         return $days . ' jour' . ($days > 1 ? 's' : '');
     }
+
+    //validate, crop to a square and store an uploaded image, return its path under img/ or null
+    public static function saveSquareImage(array $file, string $subDir, int $size = 400): ?string
+    {
+        if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
+            return null;
+        }
+        if ($file['size'] > 2 * 1024 * 1024) {
+            return null;
+        }
+
+        //rebuild the image with gd, this drops anything that is not a real image
+        $source = @imagecreatefromstring(file_get_contents($file['tmp_name']));
+        if (!$source) {
+            return null;
+        }
+
+        $width = imagesx($source);
+        $height = imagesy($source);
+        $side = min($width, $height);
+        $square = imagecreatetruecolor($size, $size);
+        imagecopyresampled(
+            $square,
+            $source,
+            0,
+            0,
+            (int) (($width - $side) / 2),
+            (int) (($height - $side) / 2),
+            $size,
+            $size,
+            $side,
+            $side
+        );
+
+        $name = $subDir . '/' . uniqid('', true) . '.jpg';
+        imagejpeg($square, 'img/' . $name, 85);
+        return $name;
+    }
 }

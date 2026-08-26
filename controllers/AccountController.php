@@ -71,6 +71,33 @@ class AccountController
         Utils::redirect('account&saved=1');
     }
 
+    //upload and store a new profile picture
+    public function uploadAvatar(): void
+    {
+        if (!isset($_SESSION['user'])) {
+            Utils::redirect('login');
+        }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            Utils::redirect('account');
+        }
+
+        $userId = (int) $_SESSION['user']['id'];
+        $path = Utils::saveSquareImage($_FILES['avatar'] ?? [], 'avatars', 300);
+
+        if ($path) {
+            $userManager = new UserManager();
+            $old = $userManager->getUserById($userId)->getAvatar();
+            $userManager->updateAvatar($userId, $path);
+
+            //remove the previous file to avoid orphans
+            if ($old && is_file('img/' . $old)) {
+                unlink('img/' . $old);
+            }
+        }
+
+        Utils::redirect('account');
+    }
+
     //check the submitted profile, return the list of errors
     private function validateProfile(UserManager $userManager, User $current, string $username, string $email, string $password): array
     {

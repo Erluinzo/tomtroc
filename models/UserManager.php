@@ -6,7 +6,7 @@ class UserManager extends AbstractEntityManager
     //get one user by his id
     public function getUserById(int $id): ?User
     {
-        $sql = "SELECT id, username, email, password, created_at FROM users WHERE id = :id";
+        $sql = "SELECT id, username, email, password, avatar, created_at FROM users WHERE id = :id";
         $result = $this->db->query($sql, ['id' => $id]);
         $user = $result->fetch();
 
@@ -71,6 +71,15 @@ class UserManager extends AbstractEntityManager
     {
         $this->db->query("UPDATE users SET password = :password WHERE id = :id", [
             'password' => $password,
+            'id' => $id,
+        ]);
+    }
+
+    //update the avatar path of a user
+    public function updateAvatar(int $id, string $avatar): void
+    {
+        $this->db->query("UPDATE users SET avatar = :avatar WHERE id = :id", [
+            'avatar' => $avatar,
             'id' => $id,
         ]);
     }

@@ -36,6 +36,11 @@ try {
             $accountController->update();
             break;
 
+        case 'uploadAvatar':
+            $accountController = new AccountController();
+            $accountController->uploadAvatar();
+            break;
+
         case 'editBook':
             $booksController = new BooksController();
             $booksController->showEdit();

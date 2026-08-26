@@ -738,11 +738,21 @@ ul {
     font-size: 52px;
 }
 
+.profile__avatar--img {
+    object-fit: cover;
+}
+
+.avatar-form {
+    margin: 0;
+}
+
 .profile__edit {
+    display: inline-block;
     margin-top: 12px;
     font-size: 14px;
     color: var(--gray);
     text-decoration: underline;
+    cursor: pointer;
 }
 
 .profile__rule {
