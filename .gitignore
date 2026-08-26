@@ -1,1 +1,14 @@
 config/config.php
+
+# book covers: keep the demo fixtures, ignore uploaded ones
+img/books/*
+!img/books/dune.jpg
+!img/books/esther.jpg
+!img/books/kinfolk-table.jpg
+!img/books/milk-and-honey.jpg
+!img/books/sapiens.jpg
+!img/books/wabi-sabi.jpg
+
+# uploaded avatars: keep the folder, ignore the files
+img/avatars/*
+!img/avatars/.gitkeep
