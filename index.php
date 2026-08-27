@@ -31,6 +31,11 @@ try {
             $accountController->index();
             break;
 
+        case 'profile':
+            $profileController = new ProfileController();
+            $profileController->show();
+            break;
+
         case 'updateAccount':
             $accountController = new AccountController();
             $accountController->update();

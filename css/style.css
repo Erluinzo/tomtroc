@@ -1201,3 +1201,29 @@ ul {
     justify-content: center;
     color: var(--gray);
 }
+
+/* public profile */
+.profile-page {
+    padding: 48px 0 64px;
+}
+
+.profile-page__grid {
+    display: flex;
+    align-items: stretch;
+    gap: 32px;
+}
+
+.profile-page__grid .account__profile {
+    width: 400px;
+    flex-shrink: 0;
+}
+
+.profile-page__library {
+    flex: 1;
+    margin-top: 0;
+}
+
+.profile__cta {
+    width: 100%;
+    margin-top: auto;
+}

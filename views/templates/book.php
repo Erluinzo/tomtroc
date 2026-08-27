@@ -31,7 +31,7 @@
             </div>
 
             <h2 class="book__label">Propriétaire</h2>
-            <a class="owner" href="#">
+            <a class="owner" href="index.php?action=profile&id=<?= (int) $book->getUserId() ?>">
                 <span class="owner__avatar" aria-hidden="true"><?= htmlspecialchars(strtoupper(mb_substr($book->getOwnerName(), 0, 1))) ?></span>
                 <span class="owner__name"><?= htmlspecialchars($book->getOwnerName()) ?></span>
             </a>
