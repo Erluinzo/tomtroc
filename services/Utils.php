@@ -65,7 +65,10 @@ class Utils
         );
 
         $name = $subDir . '/' . uniqid('', true) . '.jpg';
-        imagejpeg($square, 'img/' . $name, 85);
+        //if writing fails (e.g. folder not writable), do not keep a broken path
+        if (!imagejpeg($square, 'img/' . $name, 85)) {
+            return null;
+        }
         return $name;
     }
 
