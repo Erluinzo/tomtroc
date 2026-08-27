@@ -30,4 +30,27 @@ class MessageManager extends AbstractEntityManager
             'content' => $content,
         ]);
     }
+
+    //count the messages received by a member and not read yet
+    public function countUnread(int $userId): int
+    {
+        $sql = "SELECT COUNT(*)
+                FROM messages m
+                INNER JOIN conversations c ON c.id = m.conversation_id
+                WHERE (c.user_one_id = :uid_a OR c.user_two_id = :uid_b)
+                  AND m.sender_id <> :uid_c
+                  AND m.is_read = 0";
+        return (int) $this->db
+            ->query($sql, ['uid_a' => $userId, 'uid_b' => $userId, 'uid_c' => $userId])
+            ->fetchColumn();
+    }
+
+    //mark the messages received in a conversation as read
+    public function markConversationRead(int $conversationId, int $userId): void
+    {
+        $sql = "UPDATE messages
+                SET is_read = 1
+                WHERE conversation_id = :cid AND sender_id <> :uid AND is_read = 0";
+        $this->db->query($sql, ['cid' => $conversationId, 'uid' => $userId]);
+    }
 }

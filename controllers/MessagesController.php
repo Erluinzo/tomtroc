@@ -18,7 +18,10 @@ class MessagesController
         if ($activeId > 0) {
             $active = $conversationManager->getConversationForUser($activeId, $userId);
             if ($active) {
-                $messages = (new MessageManager())->getMessages($activeId);
+                $messageManager = new MessageManager();
+                $messages = $messageManager->getMessages($activeId);
+                //opening the conversation clears its unread messages
+                $messageManager->markConversationRead($activeId, $userId);
             }
         }
 
