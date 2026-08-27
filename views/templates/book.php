@@ -36,7 +36,7 @@
                 <span class="owner__name"><?= htmlspecialchars($book->getOwnerName()) ?></span>
             </a>
 
-            <a class="btn btn--primary btn--block book__cta" href="#">Envoyer un message</a>
+            <a class="btn btn--primary btn--block book__cta" href="index.php?action=startConversation&user=<?= (int) $book->getUserId() ?>">Envoyer un message</a>
         </div>
     </div>
 </section>

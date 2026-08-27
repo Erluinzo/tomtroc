@@ -28,7 +28,7 @@ $currentAction = $_GET['action'] ?? 'home';
 
             <nav class="nav nav--user" aria-label="Navigation du compte">
                 <ul>
-                    <li><a href="#">Messagerie <span class="badge">1</span></a></li>
+                    <li><a href="index.php?action=messaging"<?= $currentAction === 'messaging' ? ' aria-current="page"' : '' ?>>Messagerie <span class="badge">1</span></a></li>
                     <li><a href="index.php?action=account"<?= $currentAction === 'account' ? ' aria-current="page"' : '' ?>>Mon compte</a></li>
                     <?php if (isset($_SESSION['user'])) { ?>
                         <li><a href="index.php?action=logout">Déconnexion</a></li>

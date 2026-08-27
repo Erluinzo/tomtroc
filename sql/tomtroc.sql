@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 26, 2026 at 10:00 PM
+-- Generation Time: Aug 27, 2026 at 09:37 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -56,6 +56,56 @@ INSERT INTO `books` (`id`, `user_id`, `title`, `author`, `description`, `cover`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `conversations`
+--
+
+DROP TABLE IF EXISTS `conversations`;
+CREATE TABLE `conversations` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user_one_id` int(10) UNSIGNED NOT NULL,
+  `user_two_id` int(10) UNSIGNED NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `conversations`
+--
+
+INSERT INTO `conversations` (`id`, `user_one_id`, `user_two_id`, `created_at`) VALUES
+(1, 1, 2, '2026-08-27 05:12:09'),
+(2, 1, 3, '2026-08-27 08:03:30'),
+(3, 2, 4, '2026-08-27 09:17:32');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `messages`
+--
+
+DROP TABLE IF EXISTS `messages`;
+CREATE TABLE `messages` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `conversation_id` int(10) UNSIGNED NOT NULL,
+  `sender_id` int(10) UNSIGNED NOT NULL,
+  `content` text NOT NULL,
+  `is_read` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`id`, `conversation_id`, `sender_id`, `content`, `is_read`, `created_at`) VALUES
+(1, 1, 1, 'test 1', 0, '2026-08-27 05:12:20'),
+(2, 1, 2, 'test 2', 0, '2026-08-27 05:15:23'),
+(3, 1, 1, 'coucou', 0, '2026-08-27 07:29:12'),
+(4, 2, 3, 'un message un peu plus long coucou test', 0, '2026-08-27 08:03:59'),
+(5, 3, 4, '<script>alert(\'Faille XSS !\')</script>', 0, '2026-08-27 09:18:35');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -92,6 +142,22 @@ ALTER TABLE `books`
   ADD KEY `idx_books_user` (`user_id`);
 
 --
+-- Indexes for table `conversations`
+--
+ALTER TABLE `conversations`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_pair` (`user_one_id`,`user_two_id`),
+  ADD KEY `idx_user_two` (`user_two_id`);
+
+--
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_conv` (`conversation_id`),
+  ADD KEY `idx_sender` (`sender_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -110,6 +176,18 @@ ALTER TABLE `books`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
+-- AUTO_INCREMENT for table `conversations`
+--
+ALTER TABLE `conversations`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -124,6 +202,20 @@ ALTER TABLE `users`
 --
 ALTER TABLE `books`
   ADD CONSTRAINT `fk_books_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `conversations`
+--
+ALTER TABLE `conversations`
+  ADD CONSTRAINT `fk_conv_one` FOREIGN KEY (`user_one_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_conv_two` FOREIGN KEY (`user_two_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `fk_msg_conv` FOREIGN KEY (`conversation_id`) REFERENCES `conversations` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_msg_sender` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

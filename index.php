@@ -41,6 +41,21 @@ try {
             $accountController->uploadAvatar();
             break;
 
+        case 'messaging':
+            $messagesController = new MessagesController();
+            $messagesController->index();
+            break;
+
+        case 'sendMessage':
+            $messagesController = new MessagesController();
+            $messagesController->send();
+            break;
+
+        case 'startConversation':
+            $messagesController = new MessagesController();
+            $messagesController->start();
+            break;
+
         case 'editBook':
             $booksController = new BooksController();
             $booksController->showEdit();

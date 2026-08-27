@@ -68,4 +68,11 @@ class Utils
         imagejpeg($square, 'img/' . $name, 85);
         return $name;
     }
+
+    //short time label: hour today, day.month otherwise
+    public static function shortTime(string $datetime): string
+    {
+        $ts = strtotime($datetime);
+        return date('Y-m-d', $ts) === date('Y-m-d') ? date('H:i', $ts) : date('d.m', $ts);
+    }
 }
