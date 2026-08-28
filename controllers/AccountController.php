@@ -89,7 +89,7 @@ class AccountController
             Utils::redirect('account&error=avatar');
         }
 
-        $path = Utils::saveSquareImage($upload, 'avatars', 300);
+        $path = Utils::saveUpload($upload, 'avatars');
         if (!$path) {
             Utils::redirect('account&error=avatar');
         }

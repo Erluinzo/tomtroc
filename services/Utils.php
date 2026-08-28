@@ -63,78 +63,19 @@ class Utils
         return null;
     }
 
-    //store an uploaded picture as jpg, resized so its longest side is $maxSide at most
-    public static function saveImage(array $file, string $subDir, int $maxSide): ?string
-    {
-        $source = self::loadUpload($file);
-        if (!$source) {
-            return null;
-        }
-
-        $width = imagesx($source);
-        $height = imagesy($source);
-        $ratio = min(1, $maxSide / max($width, $height));
-        $newWidth = (int) round($width * $ratio);
-        $newHeight = (int) round($height * $ratio);
-
-        $image = self::whiteCanvas($newWidth, $newHeight);
-        imagecopyresampled($image, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-
-        return self::writeJpeg($image, $subDir);
-    }
-
-    //store an uploaded picture as a square jpg (center crop)
-    public static function saveSquareImage(array $file, string $subDir, int $size): ?string
-    {
-        $source = self::loadUpload($file);
-        if (!$source) {
-            return null;
-        }
-
-        $width = imagesx($source);
-        $height = imagesy($source);
-        $side = min($width, $height);
-
-        $image = self::whiteCanvas($size, $size);
-        imagecopyresampled(
-            $image,
-            $source,
-            0,
-            0,
-            (int) (($width - $side) / 2),
-            (int) (($height - $side) / 2),
-            $size,
-            $size,
-            $side,
-            $side
-        );
-
-        return self::writeJpeg($image, $subDir);
-    }
-
-    //decode the uploaded file with gd, null when it is not a valid picture
-    private static function loadUpload(array $file): ?GdImage
+    //keep a valid uploaded picture under img/ with a safe name, return its relative path
+    public static function saveUpload(array $file, string $subDir): ?string
     {
         if (self::imageUploadError($file) !== null) {
             return null;
         }
-        $source = @imagecreatefromstring(file_get_contents($file['tmp_name']));
-        return $source ?: null;
-    }
 
-    //blank white image, so transparent png areas do not turn black
-    private static function whiteCanvas(int $width, int $height): GdImage
-    {
-        $image = imagecreatetruecolor($width, $height);
-        imagefill($image, 0, 0, imagecolorallocate($image, 255, 255, 255));
-        return $image;
-    }
+        //the extension comes from the real content, not from the name sent by the browser
+        $info = getimagesize($file['tmp_name']);
+        $extension = $info[2] === IMAGETYPE_PNG ? 'png' : 'jpg';
+        $name = $subDir . '/' . uniqid('', true) . '.' . $extension;
 
-    //write the picture under img/ with a unique name, return the relative path
-    private static function writeJpeg(GdImage $image, string $subDir): ?string
-    {
-        $name = $subDir . '/' . uniqid('', true) . '.jpg';
-        if (!imagejpeg($image, 'img/' . $name, 85)) {
+        if (!move_uploaded_file($file['tmp_name'], 'img/' . $name)) {
             return null;
         }
         return $name;

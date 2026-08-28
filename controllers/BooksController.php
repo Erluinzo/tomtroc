@@ -103,7 +103,7 @@ class BooksController
         $oldCover = $current ? $current->getCover() : null;
         $cover = $oldCover;
         if (Utils::hasUpload($upload)) {
-            $cover = Utils::saveImage($upload, 'books', 1600);
+            $cover = Utils::saveUpload($upload, 'books');
             if ($cover === null) {
                 $this->showFormAgain($id, $title, $author, $description, $isAvailable, $oldCover, ["La photo n'a pas pu être enregistrée."]);
                 return;
@@ -163,7 +163,7 @@ class BooksController
     //remove a cover file uploaded through the site once no book uses it (demo pictures are kept)
     private function removeCoverFile(?string $cover): void
     {
-        if (!$cover || !preg_match('/^books\/[0-9a-f]+\.[0-9]+\.jpg$/', $cover)) {
+        if (!$cover || !preg_match('/^books\/[0-9a-f]+\.[0-9]+\.(jpg|png)$/', $cover)) {
             return;
         }
         if ((new BookManager())->countBooksWithCover($cover) > 0) {
