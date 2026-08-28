@@ -14,8 +14,12 @@ $cover = $hasData ? $book->getCover() : null;
         <h1 class="book-form__title"><?= $isEdit ? 'Modifier les informations' : 'Ajouter un livre' ?></h1>
 
         <div class="card book-form__card">
-            <?php if (!empty($error)) { ?>
-                <p class="form__error"><?= htmlspecialchars($error) ?></p>
+            <?php if (!empty($errors)) { ?>
+                <div class="form__error">
+                    <?php foreach ($errors as $err) { ?>
+                        <p><?= htmlspecialchars($err) ?></p>
+                    <?php } ?>
+                </div>
             <?php } ?>
 
             <form class="book-form__grid" action="index.php?action=saveBook" method="post" enctype="multipart/form-data">
@@ -26,12 +30,13 @@ $cover = $hasData ? $book->getCover() : null;
                 <div class="book-form__media">
                     <p class="form__label">Photo</p>
                     <?php if ($cover) { ?>
-                        <img class="book-form__cover" src="./img/<?= htmlspecialchars($cover) ?>" alt="Couverture de <?= htmlspecialchars($title) ?>">
+                        <img class="book-form__cover" id="cover-preview" src="./img/<?= htmlspecialchars($cover) ?>" alt="Couverture de <?= htmlspecialchars($title) ?>">
                     <?php } else { ?>
-                        <div class="book-form__cover book-form__cover--empty">Aucune photo</div>
+                        <div class="book-form__cover book-form__cover--empty" id="cover-placeholder">Aucune photo</div>
                     <?php } ?>
-                    <input class="visually-hidden" type="file" id="cover" name="cover" accept="image/jpeg,image/png,image/webp">
+                    <input class="visually-hidden" type="file" id="cover" name="cover" accept=".jpg,.jpeg,.png">
                     <label class="book-form__file" for="cover"><?= $cover ? 'Modifier la photo' : 'Ajouter une photo' ?></label>
+                    <p class="form__hint book-form__hint">Obligatoire, JPG ou PNG, 2 Mo maximum</p>
                 </div>
 
                 <div class="book-form__fields">

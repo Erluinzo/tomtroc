@@ -111,4 +111,11 @@ class BookManager extends AbstractEntityManager
     {
         $this->db->query("DELETE FROM books WHERE id = :id", ['id' => $id]);
     }
+
+    //how many books use a given cover file
+    public function countBooksWithCover(string $cover): int
+    {
+        $result = $this->db->query("SELECT COUNT(*) FROM books WHERE cover = :cover", ['cover' => $cover]);
+        return (int) $result->fetchColumn();
+    }
 }

@@ -82,20 +82,28 @@ class AccountController
         }
 
         $userId = (int) $_SESSION['user']['id'];
-        $path = Utils::saveSquareImage($_FILES['avatar'] ?? [], 'avatars', 300);
+        $upload = $_FILES['avatar'] ?? [];
 
-        if ($path) {
-            $userManager = new UserManager();
-            $old = $userManager->getUserById($userId)->getAvatar();
-            $userManager->updateAvatar($userId, $path);
-
-            //remove the previous file to avoid orphans
-            if ($old && is_file('img/' . $old)) {
-                unlink('img/' . $old);
-            }
+        //refused files send the member back with a message
+        if (!Utils::hasUpload($upload) || Utils::imageUploadError($upload) !== null) {
+            Utils::redirect('account&error=avatar');
         }
 
-        Utils::redirect('account');
+        $path = Utils::saveSquareImage($upload, 'avatars', 300);
+        if (!$path) {
+            Utils::redirect('account&error=avatar');
+        }
+
+        $userManager = new UserManager();
+        $old = $userManager->getUserById($userId)->getAvatar();
+        $userManager->updateAvatar($userId, $path);
+
+        //remove the previous file to avoid orphans
+        if ($old && is_file('img/' . $old)) {
+            unlink('img/' . $old);
+        }
+
+        Utils::redirect('account&saved=avatar');
     }
 
     //check the submitted profile, return the list of errors

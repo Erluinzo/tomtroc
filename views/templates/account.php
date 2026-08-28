@@ -15,9 +15,15 @@ $bookCount = count($books);
                 <?php } ?>
 
                 <form class="avatar-form" action="index.php?action=uploadAvatar" method="post" enctype="multipart/form-data">
-                    <input class="visually-hidden" type="file" id="avatar" name="avatar" accept="image/jpeg,image/png,image/webp" onchange="this.form.submit()">
+                    <input class="visually-hidden" type="file" id="avatar" name="avatar" accept=".jpg,.jpeg,.png" onchange="this.form.submit()">
                     <label class="profile__edit" for="avatar">modifier</label>
                 </form>
+
+                <?php if (Utils::request('error') === 'avatar') { ?>
+                    <p class="form__error profile__notice">La photo doit être une image JPG ou PNG de 2 Mo maximum.</p>
+                <?php } elseif (Utils::request('saved') === 'avatar') { ?>
+                    <p class="form__success profile__notice">Votre photo a été mise à jour.</p>
+                <?php } ?>
 
                 <hr class="profile__rule">
 
@@ -26,9 +32,9 @@ $bookCount = count($books);
 
                 <p class="profile__label">Bibliothèque</p>
                 <p class="profile__count">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <rect x="4" y="4" width="6" height="16" rx="1"></rect>
-                        <rect x="14" y="4" width="6" height="16" rx="1"></rect>
+                    <svg viewBox="0 0 11 15" width="11" height="15" fill="currentColor" aria-hidden="true" focusable="false">
+                        <path d="M3.275 0.565H1.015C0.454 0.565 0 1.019 0 1.58V13.134C0 13.695 0.454 14.149 1.015 14.149H3.275C3.835 14.149 4.29 13.695 4.29 13.134V1.58C4.29 1.019 3.835 0.565 3.275 0.565ZM0.715 1.58C0.715 1.414 0.849 1.28 1.015 1.28H3.275C3.441 1.28 3.575 1.414 3.575 1.58V13.134C3.575 13.3 3.441 13.434 3.275 13.434H1.015C0.849 13.434 0.715 13.3 0.715 13.134V1.58Z"></path>
+                        <path d="M9.466 0.66L7.211 0.503C6.652 0.463 6.167 0.885 6.128 1.444L5.322 12.97C5.283 13.53 5.704 14.015 6.264 14.054L8.518 14.211C9.077 14.25 9.562 13.829 9.601 13.27L10.407 1.743C10.446 1.184 10.025 0.699 9.466 0.66ZM6.841 1.494C6.853 1.329 6.996 1.204 7.161 1.216L9.416 1.373C9.581 1.385 9.706 1.528 9.694 1.694L8.888 13.22C8.876 13.385 8.733 13.51 8.568 13.498L6.313 13.341C6.148 13.329 6.024 13.186 6.035 13.02L6.841 1.494Z"></path>
                     </svg>
                     <?= $bookCount ?> livre<?= $bookCount > 1 ? 's' : '' ?>
                 </p>
@@ -43,7 +49,7 @@ $bookCount = count($books);
                             <p><?= htmlspecialchars($err) ?></p>
                         <?php } ?>
                     </div>
-                <?php } elseif (Utils::request('saved')) { ?>
+                <?php } elseif (Utils::request('saved') === '1') { ?>
                     <p class="form__success">Vos informations ont été mises à jour.</p>
                 <?php } ?>
 
@@ -72,6 +78,12 @@ $bookCount = count($books);
             <div class="account__library-head">
                 <a class="btn btn--primary" href="index.php?action=editBook">Ajouter un livre</a>
             </div>
+
+            <?php if (Utils::request('saved') === 'book') { ?>
+                <p class="form__success lib-table__notice">Le livre a été enregistré.</p>
+            <?php } elseif (Utils::request('deleted')) { ?>
+                <p class="form__success lib-table__notice">Le livre a été supprimé.</p>
+            <?php } ?>
 
             <table class="lib-table">
                 <thead>
@@ -102,12 +114,14 @@ $bookCount = count($books);
                                     <span class="pill pill--unavailable">non dispo.</span>
                                 <?php } ?>
                             </td>
-                            <td class="lib-table__actions">
-                                <a href="index.php?action=editBook&id=<?= (int) $book->getId() ?>">Éditer</a>
-                                <form class="inline-form" action="index.php?action=deleteBook" method="post">
-                                    <input type="hidden" name="id" value="<?= (int) $book->getId() ?>">
-                                    <button class="link-button lib-table__delete" type="submit">Supprimer</button>
-                                </form>
+                            <td>
+                                <div class="lib-table__actions">
+                                    <a href="index.php?action=editBook&id=<?= (int) $book->getId() ?>">Éditer</a>
+                                    <form class="inline-form" action="index.php?action=deleteBook" method="post" onsubmit="return confirm('Supprimer ce livre ?');">
+                                        <input type="hidden" name="id" value="<?= (int) $book->getId() ?>">
+                                        <button class="link-button lib-table__delete" type="submit">Supprimer</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     <?php } ?>

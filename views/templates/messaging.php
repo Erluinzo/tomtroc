@@ -11,6 +11,7 @@ $renderAvatar = function (?string $avatar, string $name, string $class): void {
 };
 ?>
 <section class="messaging">
+    <div class="container messaging__inner">
     <aside class="messaging__sidebar">
         <h1 class="messaging__title">Messagerie</h1>
 
@@ -71,5 +72,6 @@ $renderAvatar = function (?string $avatar, string $name, string $class): void {
                 <p>Sélectionnez une conversation pour afficher les messages.</p>
             </div>
         <?php } ?>
+    </div>
     </div>
 </section>

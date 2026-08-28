@@ -44,7 +44,7 @@
 <section class="how">
     <div class="container">
         <h2 class="section-title">Comment ça marche ?</h2>
-        <p class="how__intro">Échanger des livres avec TomTroc c'est simple et amusant ! Suivez ces étapes pour commencer :</p>
+        <p class="how__intro">Échanger des livres avec TomTroc c’est simple et amusant ! Suivez ces étapes pour commencer :</p>
 
         <ul class="steps">
             <li class="step">Inscrivez-vous gratuitement sur notre plateforme.</li>
@@ -72,7 +72,7 @@
                 <p>Nous sommes passionnés par la création d'une plateforme conviviale qui permet aux lecteurs de se connecter, de partager leurs découvertes littéraires et d'échanger des livres qui attendent patiemment sur les étagères.</p>
             </div>
 
-            <p class="values__team">L'équipe Tom Troc</p>
+            <p class="values__team">L’équipe Tom Troc</p>
             <img class="values__heart" src="./img/heart.svg" alt="" width="100" height="88">
         </div>
     </div>

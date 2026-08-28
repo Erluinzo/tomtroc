@@ -31,18 +31,59 @@ class Utils
         return $days . ' jour' . ($days > 1 ? 's' : '');
     }
 
-    //validate, crop to a square and store an uploaded image, return its path under img/ or null
-    public static function saveSquareImage(array $file, string $subDir, int $size = 400): ?string
+    //true when the form sent a file in this field
+    public static function hasUpload(array $file): bool
     {
-        if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
-            return null;
+        return ($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE;
+    }
+
+    //check an uploaded picture, return an error message or null when it is fine
+    public static function imageUploadError(array $file): ?string
+    {
+        $error = $file['error'] ?? UPLOAD_ERR_NO_FILE;
+
+        if ($error === UPLOAD_ERR_INI_SIZE || $error === UPLOAD_ERR_FORM_SIZE) {
+            return "L'image est trop lourde (2 Mo maximum).";
+        }
+        if ($error !== UPLOAD_ERR_OK) {
+            return "Le fichier n'a pas pu être envoyé.";
         }
         if ($file['size'] > 2 * 1024 * 1024) {
+            return "L'image est trop lourde (2 Mo maximum).";
+        }
+
+        //only jpg and png are accepted, gd has no webp support on this server
+        $info = @getimagesize($file['tmp_name']);
+        if (!$info || !in_array($info[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG], true)) {
+            return "Le fichier doit être une image JPG ou PNG.";
+        }
+        return null;
+    }
+
+    //store an uploaded picture as jpg, resized so its longest side is $maxSide at most
+    public static function saveImage(array $file, string $subDir, int $maxSide): ?string
+    {
+        $source = self::loadUpload($file);
+        if (!$source) {
             return null;
         }
 
-        //rebuild the image with gd, this drops anything that is not a real image
-        $source = @imagecreatefromstring(file_get_contents($file['tmp_name']));
+        $width = imagesx($source);
+        $height = imagesy($source);
+        $ratio = min(1, $maxSide / max($width, $height));
+        $newWidth = (int) round($width * $ratio);
+        $newHeight = (int) round($height * $ratio);
+
+        $image = self::whiteCanvas($newWidth, $newHeight);
+        imagecopyresampled($image, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+        return self::writeJpeg($image, $subDir);
+    }
+
+    //store an uploaded picture as a square jpg (center crop)
+    public static function saveSquareImage(array $file, string $subDir, int $size): ?string
+    {
+        $source = self::loadUpload($file);
         if (!$source) {
             return null;
         }
@@ -50,9 +91,10 @@ class Utils
         $width = imagesx($source);
         $height = imagesy($source);
         $side = min($width, $height);
-        $square = imagecreatetruecolor($size, $size);
+
+        $image = self::whiteCanvas($size, $size);
         imagecopyresampled(
-            $square,
+            $image,
             $source,
             0,
             0,
@@ -64,9 +106,32 @@ class Utils
             $side
         );
 
+        return self::writeJpeg($image, $subDir);
+    }
+
+    //decode the uploaded file with gd, null when it is not a valid picture
+    private static function loadUpload(array $file): ?GdImage
+    {
+        if (self::imageUploadError($file) !== null) {
+            return null;
+        }
+        $source = @imagecreatefromstring(file_get_contents($file['tmp_name']));
+        return $source ?: null;
+    }
+
+    //blank white image, so transparent png areas do not turn black
+    private static function whiteCanvas(int $width, int $height): GdImage
+    {
+        $image = imagecreatetruecolor($width, $height);
+        imagefill($image, 0, 0, imagecolorallocate($image, 255, 255, 255));
+        return $image;
+    }
+
+    //write the picture under img/ with a unique name, return the relative path
+    private static function writeJpeg(GdImage $image, string $subDir): ?string
+    {
         $name = $subDir . '/' . uniqid('', true) . '.jpg';
-        //if writing fails (e.g. folder not writable), do not keep a broken path
-        if (!imagejpeg($square, 'img/' . $name, 85)) {
+        if (!imagejpeg($image, 'img/' . $name, 85)) {
             return null;
         }
         return $name;

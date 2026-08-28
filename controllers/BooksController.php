@@ -68,29 +68,37 @@ class BooksController
 
         //a book can only be edited by its owner
         $current = $id > 0 ? $this->ownedBookOrFail($id) : null;
+        $upload = $_FILES['cover'] ?? [];
 
-        //keep the current cover unless a new valid image is uploaded
-        $cover = $this->saveCover($_FILES['cover'] ?? []);
-        if ($cover === null && $current) {
-            $cover = $current->getCover();
+        $errors = [];
+        if ($title === '' || $author === '') {
+            $errors[] = "Le titre et l'auteur sont obligatoires.";
+        }
+        if (Utils::hasUpload($upload)) {
+            $uploadError = Utils::imageUploadError($upload);
+            if ($uploadError !== null) {
+                $errors[] = $uploadError;
+            }
+        } elseif (!$current || !$current->getCover()) {
+            //a book always needs a picture, an existing one is kept when editing
+            $errors[] = "La photo du livre est obligatoire.";
         }
 
         //validation failed, show the form again with the values
-        if ($title === '' || $author === '') {
-            $book = new Book([
-                'id' => $id,
-                'title' => $title,
-                'author' => $author,
-                'description' => $description,
-                'cover' => $cover,
-                'is_available' => $isAvailable,
-            ]);
-            $view = new View($id > 0 ? 'Modifier un livre' : 'Ajouter un livre');
-            $view->render("editBook", [
-                'book' => $book,
-                'error' => "Le titre et l'auteur sont obligatoires.",
-            ]);
+        if (!empty($errors)) {
+            $this->showFormAgain($id, $title, $author, $description, $isAvailable, $current ? $current->getCover() : null, $errors);
             return;
+        }
+
+        //keep the current cover unless a new picture was sent
+        $oldCover = $current ? $current->getCover() : null;
+        $cover = $oldCover;
+        if (Utils::hasUpload($upload)) {
+            $cover = Utils::saveImage($upload, 'books', 1600);
+            if ($cover === null) {
+                $this->showFormAgain($id, $title, $author, $description, $isAvailable, $oldCover, ["La photo n'a pas pu être enregistrée."]);
+                return;
+            }
         }
 
         if ($id > 0) {
@@ -99,7 +107,12 @@ class BooksController
             $bookManager->addBook($userId, $title, $author, $description, $cover, $isAvailable);
         }
 
-        Utils::redirect('account');
+        //the previous picture is not needed anymore
+        if ($oldCover && $cover !== $oldCover) {
+            $this->removeCoverFile($oldCover);
+        }
+
+        Utils::redirect('account&saved=book');
     }
 
     //delete one of the member's books
@@ -111,10 +124,47 @@ class BooksController
         }
 
         $id = (int) Utils::request('id', 0);
-        $this->ownedBookOrFail($id);
+        $book = $this->ownedBookOrFail($id);
 
         (new BookManager())->deleteBook($id);
-        Utils::redirect('account');
+        $this->removeCoverFile($book->getCover());
+
+        Utils::redirect('account&deleted=1');
+    }
+
+    //render the form again with the submitted values and the error messages
+    private function showFormAgain(int $id, string $title, string $author, string $description, int $isAvailable, ?string $cover, array $errors): void
+    {
+        $book = new Book([
+            'id' => $id,
+            'title' => $title,
+            'author' => $author,
+            'description' => $description,
+            'cover' => $cover,
+            'is_available' => $isAvailable,
+        ]);
+
+        $view = new View($id > 0 ? 'Modifier un livre' : 'Ajouter un livre');
+        $view->render("editBook", [
+            'book' => $book,
+            'errors' => $errors,
+        ]);
+    }
+
+    //remove a cover file uploaded through the site once no book uses it (demo pictures are kept)
+    private function removeCoverFile(?string $cover): void
+    {
+        if (!$cover || !preg_match('/^books\/[0-9a-f]+\.[0-9]+\.jpg$/', $cover)) {
+            return;
+        }
+        if ((new BookManager())->countBooksWithCover($cover) > 0) {
+            return;
+        }
+
+        $path = 'img/' . $cover;
+        if (is_file($path)) {
+            unlink($path);
+        }
     }
 
     //stop guests from reaching the private book actions
@@ -133,11 +183,5 @@ class BooksController
             throw new Exception("Livre introuvable ou accès refusé.");
         }
         return $book;
-    }
-
-    //validate, resize and store an uploaded cover, return its path or null
-    private function saveCover(array $file): ?string
-    {
-        return Utils::saveSquareImage($file, 'books', 400);
     }
 }
