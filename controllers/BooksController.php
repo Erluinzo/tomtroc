@@ -6,7 +6,7 @@ class BooksController
     //show every book, with an optional title search
     public function index(): void
     {
-        $search = trim(Utils::request('search', ''));
+        $search = mb_substr(trim(Utils::request('search', '')), 0, 100);
 
         $bookManager = new BookManager();
         $books = $bookManager->getAllBooks($search !== '' ? $search : null);
@@ -73,6 +73,15 @@ class BooksController
         $errors = [];
         if ($title === '' || $author === '') {
             $errors[] = "Le titre et l'auteur sont obligatoires.";
+        }
+        if (strlen($title) > Book::TITLE_MAX_LENGTH) {
+            $errors[] = 'Le titre ne doit pas dépasser ' . Book::TITLE_MAX_LENGTH . ' caractères.';
+        }
+        if (strlen($author) > Book::AUTHOR_MAX_LENGTH) {
+            $errors[] = "L'auteur ne doit pas dépasser " . Book::AUTHOR_MAX_LENGTH . ' caractères.';
+        }
+        if (strlen($description) > Book::DESCRIPTION_MAX_LENGTH) {
+            $errors[] = 'Le commentaire ne doit pas dépasser ' . Book::DESCRIPTION_MAX_LENGTH . ' caractères.';
         }
         if (Utils::hasUpload($upload)) {
             $uploadError = Utils::imageUploadError($upload);

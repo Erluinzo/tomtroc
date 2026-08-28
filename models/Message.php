@@ -3,6 +3,8 @@
 //message entity
 class Message extends AbstractEntity
 {
+    public const CONTENT_MAX_LENGTH = 2000;
+
     private int $senderId;
     private string $content;
     private string $createdAt;

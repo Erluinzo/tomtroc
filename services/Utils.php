@@ -6,7 +6,10 @@ class Utils
     //get a value from the request, or a default if not set
     public static function request(string $name, mixed $default = null): mixed
     {
-        return $_REQUEST[$name] ?? $default;
+        $value = $_REQUEST[$name] ?? $default;
+
+        //arrays are never expected here, they would break the string functions
+        return is_array($value) ? $default : $value;
     }
 
     //redirect to an action of the router and stop the script

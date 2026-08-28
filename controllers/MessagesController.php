@@ -46,6 +46,9 @@ class MessagesController
         $content = trim(Utils::request('content', ''));
 
         $active = (new ConversationManager())->getConversationForUser($conversationId, $userId);
+        if ($active && strlen($content) > Message::CONTENT_MAX_LENGTH) {
+            Utils::redirect('messaging&id=' . $conversationId . '&error=long');
+        }
         if ($active && $content !== '') {
             (new MessageManager())->sendMessage($conversationId, $userId, $content);
         }

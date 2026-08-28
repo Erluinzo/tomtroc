@@ -34,11 +34,20 @@ class AuthController
         if ($username === '' || $email === '' || $password === '') {
             $errors[] = 'Tous les champs sont obligatoires.';
         }
+        if (strlen($username) > User::USERNAME_MAX_LENGTH) {
+            $errors[] = 'Le pseudo ne doit pas dépasser ' . User::USERNAME_MAX_LENGTH . ' caractères.';
+        }
+        if (strlen($email) > User::EMAIL_MAX_LENGTH) {
+            $errors[] = "L'adresse email ne doit pas dépasser " . User::EMAIL_MAX_LENGTH . ' caractères.';
+        }
         if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors[] = "L'adresse email n'est pas valide.";
         }
-        if ($password !== '' && strlen($password) < 6) {
-            $errors[] = 'Le mot de passe doit contenir au moins 6 caractères.';
+        if ($password !== '' && strlen($password) < User::PASSWORD_MIN_LENGTH) {
+            $errors[] = 'Le mot de passe doit contenir au moins ' . User::PASSWORD_MIN_LENGTH . ' caractères.';
+        }
+        if (strlen($password) > User::PASSWORD_MAX_LENGTH) {
+            $errors[] = 'Le mot de passe ne doit pas dépasser ' . User::PASSWORD_MAX_LENGTH . ' caractères.';
         }
         if (empty($errors) && $userManager->getUserByEmail($email)) {
             $errors[] = 'Un compte existe déjà avec cette adresse email.';
@@ -78,6 +87,11 @@ class AuthController
 
         $email = Utils::request('email', '');
         $password = Utils::request('password', '');
+
+        //oversized values cannot belong to any account
+        if (strlen($email) > User::EMAIL_MAX_LENGTH || strlen($password) > User::PASSWORD_MAX_LENGTH) {
+            $email = '';
+        }
 
         $userManager = new UserManager();
         $user = $userManager->getUserByEmail($email);

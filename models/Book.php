@@ -3,6 +3,11 @@
 //book entity
 class Book extends AbstractEntity
 {
+    //sizes accepted by the books columns
+    public const TITLE_MAX_LENGTH = 150;
+    public const AUTHOR_MAX_LENGTH = 120;
+    public const DESCRIPTION_MAX_LENGTH = 3000;
+
     private string $title;
     private string $author;
     private ?string $description = null;

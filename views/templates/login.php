@@ -13,12 +13,12 @@
             <form class="form" action="index.php?action=authenticate" method="post">
                 <div class="form__group">
                     <label class="form__label" for="email">Adresse email</label>
-                    <input class="form__input" type="email" id="email" name="email" value="<?= htmlspecialchars($email ?? '') ?>" required>
+                    <input class="form__input" type="email" id="email" name="email" maxlength="<?= User::EMAIL_MAX_LENGTH ?>" value="<?= htmlspecialchars($email ?? '') ?>" required>
                 </div>
 
                 <div class="form__group">
                     <label class="form__label" for="password">Mot de passe</label>
-                    <input class="form__input" type="password" id="password" name="password" required>
+                    <input class="form__input" type="password" id="password" name="password" maxlength="<?= User::PASSWORD_MAX_LENGTH ?>" required>
                 </div>
 
                 <button class="btn btn--primary btn--block" type="submit">Se connecter</button>

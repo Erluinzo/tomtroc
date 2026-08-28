@@ -105,6 +105,11 @@ try {
             //page not found, show the error page
             throw new Exception("La page demandée n'existe pas.");
     }
+} catch (PDOException | Error $e) {
+    //technical problem: details go to the server log, the visitor gets a plain message
+    error_log($e->getMessage());
+    $errorView = new View('Erreur');
+    $errorView->render('errorPage', ['errorMessage' => 'Une erreur technique est survenue, merci de réessayer plus tard.']);
 } catch (Exception $e) {
     $errorView = new View('Erreur');
     $errorView->render('errorPage', ['errorMessage' => $e->getMessage()]);

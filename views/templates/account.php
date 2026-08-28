@@ -56,17 +56,17 @@ $bookCount = count($books);
                 <form class="form" action="index.php?action=updateAccount" method="post">
                     <div class="form__group">
                         <label class="form__label" for="email">Adresse email</label>
-                        <input class="form__input form__input--filled" type="email" id="email" name="email" value="<?= htmlspecialchars($user->getEmail()) ?>">
+                        <input class="form__input form__input--filled" type="email" id="email" name="email" maxlength="<?= User::EMAIL_MAX_LENGTH ?>" value="<?= htmlspecialchars($user->getEmail()) ?>">
                     </div>
 
                     <div class="form__group">
                         <label class="form__label" for="password">Mot de passe</label>
-                        <input class="form__input form__input--filled" type="password" id="password" name="password" placeholder="••••••••">
+                        <input class="form__input form__input--filled" type="password" id="password" name="password" minlength="<?= User::PASSWORD_MIN_LENGTH ?>" maxlength="<?= User::PASSWORD_MAX_LENGTH ?>" placeholder="••••••••">
                     </div>
 
                     <div class="form__group">
                         <label class="form__label" for="username">Pseudo</label>
-                        <input class="form__input form__input--filled" type="text" id="username" name="username" value="<?= htmlspecialchars($user->getUsername()) ?>">
+                        <input class="form__input form__input--filled" type="text" id="username" name="username" maxlength="<?= User::USERNAME_MAX_LENGTH ?>" value="<?= htmlspecialchars($user->getUsername()) ?>">
                     </div>
 
                     <button class="btn btn--outline" type="submit">Enregistrer</button>

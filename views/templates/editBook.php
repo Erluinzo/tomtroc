@@ -42,17 +42,17 @@ $cover = $hasData ? $book->getCover() : null;
                 <div class="book-form__fields">
                     <div class="form__group">
                         <label class="form__label" for="title">Titre</label>
-                        <input class="form__input form__input--filled" type="text" id="title" name="title" value="<?= htmlspecialchars($title) ?>" required>
+                        <input class="form__input form__input--filled" type="text" id="title" name="title" maxlength="<?= Book::TITLE_MAX_LENGTH ?>" value="<?= htmlspecialchars($title) ?>" required>
                     </div>
 
                     <div class="form__group">
                         <label class="form__label" for="author">Auteur</label>
-                        <input class="form__input form__input--filled" type="text" id="author" name="author" value="<?= htmlspecialchars($author) ?>" required>
+                        <input class="form__input form__input--filled" type="text" id="author" name="author" maxlength="<?= Book::AUTHOR_MAX_LENGTH ?>" value="<?= htmlspecialchars($author) ?>" required>
                     </div>
 
                     <div class="form__group">
                         <label class="form__label" for="description">Commentaire</label>
-                        <textarea class="form__input form__input--filled book-form__textarea" id="description" name="description" rows="8"><?= htmlspecialchars($description) ?></textarea>
+                        <textarea class="form__input form__input--filled book-form__textarea" id="description" name="description" rows="8" maxlength="<?= Book::DESCRIPTION_MAX_LENGTH ?>"><?= htmlspecialchars($description) ?></textarea>
                     </div>
 
                     <div class="form__group">

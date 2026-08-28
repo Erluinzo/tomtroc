@@ -62,9 +62,13 @@ $renderAvatar = function (?string $avatar, string $name, string $class): void {
                 <?php } ?>
             </div>
 
+            <?php if (Utils::request('error') === 'long') { ?>
+                <p class="form__error">Le message est trop long (<?= Message::CONTENT_MAX_LENGTH ?> caractères maximum).</p>
+            <?php } ?>
+
             <form class="thread__form" action="index.php?action=sendMessage" method="post">
                 <input type="hidden" name="conversation_id" value="<?= (int) $active->getId() ?>">
-                <input class="thread__input" type="text" name="content" placeholder="Tapez votre message ici" autocomplete="off" required>
+                <input class="thread__input" type="text" name="content" placeholder="Tapez votre message ici" maxlength="<?= Message::CONTENT_MAX_LENGTH ?>" autocomplete="off" required>
                 <button class="btn btn--primary" type="submit">Envoyer</button>
             </form>
         <?php } else { ?>
