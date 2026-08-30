@@ -44,7 +44,7 @@ class BookManager extends AbstractEntityManager
     //get one book with its owner details
     public function getBookById(int $id): ?Book
     {
-        $sql = "SELECT b.id, b.title, b.author, b.description, b.cover, b.is_available, b.user_id, u.username AS owner_name
+        $sql = "SELECT b.id, b.title, b.author, b.description, b.cover, b.is_available, b.user_id, u.username AS owner_name, u.avatar AS owner_avatar
                 FROM books b
                 INNER JOIN users u ON u.id = b.user_id
                 WHERE b.id = :id";

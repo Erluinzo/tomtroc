@@ -32,7 +32,11 @@
 
             <h2 class="book__label">Propriétaire</h2>
             <a class="owner" href="index.php?action=profile&id=<?= (int) $book->getUserId() ?>">
-                <span class="owner__avatar" aria-hidden="true"><?= htmlspecialchars(strtoupper(mb_substr($book->getOwnerName(), 0, 1))) ?></span>
+                <?php if ($book->getOwnerAvatar()) { ?>
+                    <img class="owner__avatar owner__avatar--img" src="./img/<?= htmlspecialchars($book->getOwnerAvatar()) ?>" alt="">
+                <?php } else { ?>
+                    <span class="owner__avatar" aria-hidden="true"><?= htmlspecialchars(strtoupper(mb_substr($book->getOwnerName(), 0, 1))) ?></span>
+                <?php } ?>
                 <span class="owner__name"><?= htmlspecialchars($book->getOwnerName()) ?></span>
             </a>
 

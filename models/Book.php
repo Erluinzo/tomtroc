@@ -15,6 +15,7 @@ class Book extends AbstractEntity
     private int $isAvailable = 1;
     private int $userId = 0;
     private string $ownerName;
+    private ?string $ownerAvatar = null;
 
     public function setTitle(string $title): void
     {
@@ -85,5 +86,16 @@ class Book extends AbstractEntity
     public function getOwnerName(): string
     {
         return $this->ownerName;
+    }
+
+    //avatar of the member who owns the book, filled from a join
+    public function setOwnerAvatar(?string $ownerAvatar): void
+    {
+        $this->ownerAvatar = $ownerAvatar;
+    }
+
+    public function getOwnerAvatar(): ?string
+    {
+        return $this->ownerAvatar;
     }
 }

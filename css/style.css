@@ -787,6 +787,10 @@ ul {
     font-weight: 600;
 }
 
+.owner__avatar--img {
+    object-fit: cover;
+}
+
 .owner__name {
     font-size: 14px;
 }
